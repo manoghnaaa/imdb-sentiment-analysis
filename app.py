@@ -116,20 +116,12 @@ if models_loaded:
                 probs = model.predict_proba(vectorized)
                 prob_neg, prob_pos = probs[0]
                 
-                # 4. Display result based on confidence boundaries
-                # Column 0 is Negative, Column 1 is Positive.
-                # If confidence is split evenly (between 45% and 55%), categorize as Neutral.
-                if 0.45 <= prob_pos <= 0.55:
-                    sentiment = "Neutral 😐"
-                    box_class = "neu-box"
-                    display_prob = max(prob_pos, prob_neg) * 100
-                elif prob_pos > 0.55:
+                # 4. Display result (binary classification: Positive or Negative)
+                if prob_pos >= 0.50:
                     sentiment = "Positive 😊"
-                    box_class = "pos-box"
                     display_prob = prob_pos * 100
                 else:
                     sentiment = "Negative 😞"
-                    box_class = "neg-box"
                     display_prob = prob_neg * 100
 
                 if movie_title.strip():
@@ -139,10 +131,8 @@ if models_loaded:
                 
                 if sentiment == "Positive 😊":
                     st.success(f"### **Result: {sentiment}** ({display_prob:.2f}% Confidence)")
-                elif sentiment == "Negative 😞":
-                    st.error(f"### **Result: {sentiment}** ({display_prob:.2f}% Confidence)")
                 else:
-                    st.warning(f"### **Result: {sentiment}** ({display_prob:.2f}% Confidence)")
+                    st.error(f"### **Result: {sentiment}** ({display_prob:.2f}% Confidence)")
                 
                 st.markdown(f"**Review Analysed:**")
                 st.info(f"*{user_input}*")
