@@ -5,6 +5,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import io
+from streamlit_option_menu import option_menu
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
@@ -24,17 +25,33 @@ st.set_page_config(
 st.sidebar.markdown("# 🎬 Sentiment Analytics")
 st.sidebar.markdown("---")
 
-# Page Navigation in Sidebar
-st.sidebar.markdown("### 🧭 Navigation")
-page = st.sidebar.radio(
-    "Select a Page:",
-    [
-        "🔮 Single Review Prediction", 
-        "📂 Batch Analysis (CSV Upload)", 
-        "📊 Project Insights & EDA"
-    ]
-)
-st.sidebar.markdown("---")
+# Page Navigation in Sidebar using premium option_menu component
+with st.sidebar:
+    st.markdown("### 🧭 Navigation")
+    page = option_menu(
+        menu_title=None,
+        options=[
+            "Single Review Prediction", 
+            "Batch Analysis (CSV Upload)", 
+            "Project Insights & EDA"
+        ],
+        icons=["magic", "folder-open", "bar-chart-fill"],
+        menu_icon="cast",
+        default_index=0,
+        styles={
+            "container": {"padding": "0px", "background-color": "transparent"},
+            "icon": {"font-size": "16px"}, 
+            "nav-link": {
+                "font-size": "14px", 
+                "text-align": "left", 
+                "margin": "0px", 
+                "padding": "10px",
+                "--hover-color": "#eee"
+            },
+            "nav-link-selected": {"background-color": "#1E88E5", "color": "white"},
+        }
+    )
+    st.sidebar.markdown("---")
 
 st.sidebar.info(
     "**IMDb Movie Reviews Analytics Dashboard**\n\n"
@@ -96,7 +113,7 @@ if models_loaded:
     # ----------------------------------------------------
     # PAGE 1: SINGLE REVIEW PREDICTION
     # ----------------------------------------------------
-    if page == "🔮 Single Review Prediction":
+    if page == "Single Review Prediction":
         st.markdown("### ✍️ Analyze a Single Movie Review")
         st.write("Input a movie title and copy-paste a review below to inspect its predicted sentiment classification.")
         
@@ -171,7 +188,7 @@ if models_loaded:
     # ----------------------------------------------------
     # PAGE 2: BATCH ANALYSIS (CSV UPLOAD)
     # ----------------------------------------------------
-    elif page == "📂 Batch Analysis (CSV Upload)":
+    elif page == "Batch Analysis (CSV Upload)":
         st.markdown("### 📂 Batch Review Analysis via CSV Upload")
         st.write("Upload a CSV file containing multiple reviews to process them in batch, view charts, and download predictions.")
         
@@ -296,7 +313,7 @@ if models_loaded:
     # ----------------------------------------------------
     # PAGE 3: PROJECT INSIGHTS & EDA
     # ----------------------------------------------------
-    elif page == "📊 Project Insights & EDA":
+    elif page == "Project Insights & EDA":
         st.markdown("### 📊 Project Insights & Model Performance")
         st.write("Review the model evaluation metrics, accuracy reports, and exploratory data analysis details from the training pipeline.")
         
