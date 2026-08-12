@@ -23,6 +23,19 @@ st.set_page_config(
 # --- SIDEBAR PANEL ---
 st.sidebar.markdown("# 🎬 Sentiment Analytics")
 st.sidebar.markdown("---")
+
+# Page Navigation in Sidebar
+st.sidebar.markdown("### 🧭 Navigation")
+page = st.sidebar.radio(
+    "Select a Page:",
+    [
+        "🔮 Single Review Prediction", 
+        "📂 Batch Analysis (CSV Upload)", 
+        "📊 Project Insights & EDA"
+    ]
+)
+st.sidebar.markdown("---")
+
 st.sidebar.info(
     "**IMDb Movie Reviews Analytics Dashboard**\n\n"
     "Classify raw English movie reviews into Positive or Negative categories in real-time or in batch."
@@ -78,18 +91,12 @@ else:
     except Exception as e:
         st.error(f"🚨 **Failed to load pickled model files:** {e}")
 
-# Main dashboard interface tabs
+# Render selected page from sidebar navigation
 if models_loaded:
-    tab1, tab2, tab3 = st.tabs([
-        "🔮 Single Review Prediction", 
-        "📂 Batch Analysis (CSV Upload)", 
-        "📊 Project Insights & EDA"
-    ])
-    
     # ----------------------------------------------------
-    # TAB 1: SINGLE REVIEW PREDICTION
+    # PAGE 1: SINGLE REVIEW PREDICTION
     # ----------------------------------------------------
-    with tab1:
+    if page == "🔮 Single Review Prediction":
         st.markdown("### ✍️ Analyze a Single Movie Review")
         st.write("Input a movie title and copy-paste a review below to inspect its predicted sentiment classification.")
         
@@ -162,9 +169,9 @@ if models_loaded:
                         st.write(f"**Cleaned tokens:** {cleaned}")
 
     # ----------------------------------------------------
-    # TAB 2: BATCH ANALYSIS (CSV UPLOAD)
+    # PAGE 2: BATCH ANALYSIS (CSV UPLOAD)
     # ----------------------------------------------------
-    with tab2:
+    elif page == "📂 Batch Analysis (CSV Upload)":
         st.markdown("### 📂 Batch Review Analysis via CSV Upload")
         st.write("Upload a CSV file containing multiple reviews to process them in batch, view charts, and download predictions.")
         
@@ -287,9 +294,9 @@ if models_loaded:
                 st.error(f"Failed to process CSV file: {e}")
 
     # ----------------------------------------------------
-    # TAB 3: PROJECT INSIGHTS & EDA
+    # PAGE 3: PROJECT INSIGHTS & EDA
     # ----------------------------------------------------
-    with tab3:
+    elif page == "📊 Project Insights & EDA":
         st.markdown("### 📊 Project Insights & Model Performance")
         st.write("Review the model evaluation metrics, accuracy reports, and exploratory data analysis details from the training pipeline.")
         
